@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CardioNoir AI</title>
+    <meta name="description" content="CardioNoir AI - Machine learning based cardiovascular risk estimation.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js (v3+ required) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="brand">
+        <div class="brand-mark">♥</div>
+        <div>
+            <div class="brand-name">CardioNoir</div>
+            <div class="brand-subtitle">AI HEART ANALYTICS</div>
+        </div>
+    </div>
+
+    <nav class="nav-links">
+        <a href="#assessment">Assessment</a>
+        <a href="#analytics">Analytics</a>
+        <a href="#models">Models</a>
+    </nav>
+
+    <button id="themeToggle" class="theme-toggle" type="button"
+            aria-label="Switch to light mode" title="Toggle theme">
+        <span id="themeIcon">☾</span>
+    </button>
+
+</header>
+
+<!-- Lists any API call that failed -->
+<div id="statusBanner" class="status-banner" hidden></div>
+
+
+<main>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="eyebrow">INTELLIGENT CARDIOVASCULAR ANALYTICS</div>
+
+        <h1>
+            Understand your heart.
+            <span>Know your risk.</span>
+        </h1>
+
+        <p>
+            CardioNoir AI uses machine learning to estimate
+            cardiovascular risk from clinical health indicators
+            and transform medical data into understandable insights.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#assessment" class="primary-button">Start Assessment <span>→</span></a>
+            <a href="#analytics" class="secondary-button">Explore Analytics</a>
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+
+        <div class="heart-orbit orbit-one"></div>
+        <div class="heart-orbit orbit-two"></div>
+
+        <div class="heart-card">
+            <div class="heart-symbol">♥</div>
+            <div class="pulse-line">───╱╲──╱╲────╱╲──</div>
+            <span>CARDIO ANALYSIS</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="stats-section">
+
+    <div class="stat-card">
+        <span class="stat-label">DATASET</span>
+        <strong id="datasetRows">—</strong>
+        <small>cleaned records</small>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-label">FEATURES</span>
+        <strong id="featureCount">13</strong>
+        <small>clinical indicators</small>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-label">MODELS</span>
+        <strong id="modelCount">—</strong>
+        <small>classification models</small>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-label">BEST MODEL</span>
+        <strong id="bestModel">—</strong>
+        <small>highest performing</small>
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ASSESSMENT
+========================================================= -->
+
+<section id="assessment" class="section">
+
+    <div class="section-heading">
+        <span class="section-kicker">01 / ASSESSMENT</span>
+        <h2>Cardiovascular Risk Assessment</h2>
+        <p>Enter the patient's clinical indicators to generate an ML-based risk estimate.</p>
+    </div>
+
+    <div class="assessment-layout">
+
+        <form id="predictionForm" class="assessment-card">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" min="1" max="120" placeholder="e.g. 52" required>
+                </div>
+
+                <div class="field">
+                    <label for="sex">Sex</label>
+                    <select id="sex" name="sex" required>
+                        <option value="">Select sex</option>
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="cp">Chest Pain Type</label>
+                    <select id="cp" name="cp" required>
+                        <option value="">Select type</option>
+                        <option value="0">Typical Angina</option>
+                        <option value="1">Atypical Angina</option>
+                        <option value="2">Non-Anginal Pain</option>
+                        <option value="3">Asymptomatic</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="trestbps">Resting Blood Pressure <span>mmHg</span></label>
+                    <input type="number" id="trestbps" name="trestbps" placeholder="e.g. 130" required>
+                </div>
+
+                <div class="field">
+                    <label for="chol">Cholesterol <span>mg/dL</span></label>
+                    <input type="number" id="chol" name="chol" placeholder="e.g. 240" required>
+                </div>
+
+                <div class="field">
+                    <label for="fbs">Fasting Blood Sugar</label>
+                    <select id="fbs" name="fbs" required>
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="restecg">Resting ECG</label>
+                    <select id="restecg" name="restecg" required>
+                        <option value="">Select result</option>
+                        <option value="0">Normal</option>
+                        <option value="1">ST-T Wave Abnormality</option>
+                        <option value="2">Left Ventricular Hypertrophy</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="thalach">Maximum Heart Rate <span>bpm</span></label>
+                    <input type="number" id="thalach" name="thalach" placeholder="e.g. 150" required>
+                </div>
+
+                <div class="field">
+                    <label for="exang">Exercise-Induced Angina</label>
+                    <select id="exang" name="exang" required>
+                        <option value="">Select</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="oldpeak">ST Depression <span>Oldpeak</span></label>
+                    <input type="number" id="oldpeak" name="oldpeak" step="0.1" placeholder="e.g. 1.2" required>
+                </div>
+
+                <div class="field">
+                    <label for="slope">ST Slope</label>
+                    <select id="slope" name="slope" required>
+                        <option value="">Select slope</option>
+                        <option value="0">Upsloping</option>
+                        <option value="1">Flat</option>
+                        <option value="2">Downsloping</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="ca">Major Vessels</label>
+                    <select id="ca" name="ca" required>
+                        <option value="">Select number</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="thal">Thalassemia</label>
+                    <select id="thal" name="thal" required>
+                        <option value="">Select result</option>
+                        <option value="0">Normal</option>
+                        <option value="1">Fixed Defect</option>
+                        <option value="2">Reversible Defect</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="predict-button">
+                <span>Analyze Cardiovascular Risk</span>
+                <span>→</span>
+            </button>
+
+            <div id="formError" class="form-error"></div>
+
+        </form>
+
+
+        <aside id="resultPanel" class="result-panel">
+
+            <div class="result-top">
+                <span class="section-kicker">ANALYSIS RESULT</span>
+                <span id="resultStatus">READY</span>
+            </div>
+
+            <div class="risk-circle" id="riskCircle">
+                <div>
+                    <strong id="riskPercentage">—</strong>
+                    <span>estimated risk</span>
+                </div>
+            </div>
+
+            <h3 id="resultTitle">Awaiting assessment</h3>
+
+            <p id="resultDescription">Submit the assessment to view the model's result.</p>
+
+            <div class="result-meta">
+                <div>
+                    <span>MODEL</span>
+                    <strong id="resultModel">—</strong>
+                </div>
+                <div>
+                    <span>LEVEL</span>
+                    <strong id="resultLevel">—</strong>
+                </div>
+            </div>
+
+            <button id="resetForm" type="button" class="reset-button">Reset Assessment</button>
+
+        </aside>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ANALYTICS
+========================================================= -->
+
+<section id="analytics" class="section analytics-section">
+
+    <div class="section-heading">
+        <span class="section-kicker">02 / DATA INTELLIGENCE</span>
+        <h2>Explore the Heart Dataset</h2>
+        <p>Visual patterns discovered across the cleaned cardiovascular dataset.</p>
+    </div>
+
+    <div class="charts-grid">
+
+        <!-- DOUGHNUT -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div>
+                    <span>OUTCOME DISTRIBUTION</span>
+                    <h3>Cardiovascular Outcomes</h3>
+                    <p>Distribution of patients by target outcome.</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="targetChart"></canvas>
+            </div>
+        </div>
+
+        <!-- SCATTER -->
+        <div class="chart-card">
+            <div class="chart-header scatter-header">
+                <div>
+                    <span>PATIENT ANALYTICS</span>
+                    <h3>Metrics by Age</h3>
+                    <p>Explore a selected clinical measurement.</p>
+                </div>
+                <select id="scatterMetric" class="chart-select">
+                    <option value="age_chol">Cholesterol</option>
+                    <option value="age_bp">Resting Blood Pressure</option>
+                    <option value="age_thalach">Maximum Heart Rate</option>
+                </select>
+            </div>
+            <div class="chart-container">
+                <canvas id="scatterChart"></canvas>
+            </div>
+        </div>
+
+        <!-- CORRELATION HEATMAP -->
+        <div class="chart-card chart-wide">
+            <div class="chart-header">
+                <div>
+                    <span>FEATURE RELATIONSHIPS</span>
+                    <h3>Correlation Heatmap</h3>
+                    <p>How strongly each clinical feature moves with the others and with the outcome.</p>
+                </div>
+                <div class="heatmap-legend" aria-label="Colour scale from -1 to +1">
+                    <span>-1</span>
+                    <div class="heatmap-legend-bar"></div>
+                    <span>+1</span>
+                </div>
+            </div>
+            <div class="heatmap-scroll">
+                <div id="heatmap" class="heatmap">
+                    <div class="empty-state">Loading correlation data…</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MODEL LAB
+========================================================= -->
+
+<section id="models" class="section">
+
+    <div class="section-heading">
+        <span class="section-kicker">03 / MODEL LAB</span>
+        <h2>Machine Learning Performance</h2>
+        <p>Review the individual metrics of the trained models.</p>
+    </div>
+
+    <div class="chart-card chart-wide model-performance-card">
+        <div class="chart-header">
+            <div>
+                <span>MODEL COMPARISON</span>
+                <h3>Machine Learning Performance</h3>
+                <p>Performance of models trained on the cleaned cardiovascular dataset.</p>
+            </div>
+        </div>
+        <div class="chart-container performance-container">
+            <canvas id="modelPerformanceChart"></canvas>
+        </div>
+    </div>
+
+    <div id="modelCards" class="model-grid"></div>
+
+</section>
+
+
+<section class="disclaimer">
+
+    <div class="disclaimer-icon">i</div>
+
+    <div>
+        <strong>Important</strong>
+        <p>
+            CardioNoir AI provides an ML-based risk estimate for
+            educational and analytical purposes. It is not a medical
+            diagnosis and should not replace advice from a qualified
+            healthcare professional.
+        </p>
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+    <div>
+        <strong>CardioNoir AI</strong>
+        <span>Intelligent cardiovascular analytics.</span>
+    </div>
+    <span>Built with Python · FastAPI · Scikit-learn</span>
+</footer>
+
+
+<script src="/app.js" defer></script>
+
+</body>
+</html>

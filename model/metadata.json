@@ -1,0 +1,154 @@
+{
+    "target": "target",
+    "features": [
+        "age",
+        "sex",
+        "cp",
+        "trestbps",
+        "chol",
+        "fbs",
+        "restecg",
+        "thalach",
+        "exang",
+        "oldpeak",
+        "slope",
+        "ca",
+        "thal"
+    ],
+    "feature_metadata": {
+        "age": {
+            "type": "numeric",
+            "label": "Age",
+            "min": 29.0,
+            "max": 77.0,
+            "median": 55.0
+        },
+        "sex": {
+            "type": "categorical",
+            "label": "Sex",
+            "options": {
+                "0": "Female",
+                "1": "Male"
+            }
+        },
+        "cp": {
+            "type": "categorical",
+            "label": "Chest Pain Type",
+            "options": {
+                "0": "Typical Angina",
+                "1": "Atypical Angina",
+                "2": "Non-Anginal Pain",
+                "3": "Asymptomatic"
+            }
+        },
+        "trestbps": {
+            "type": "numeric",
+            "label": "Trestbps",
+            "min": 94.0,
+            "max": 170.0,
+            "median": 130.0
+        },
+        "chol": {
+            "type": "numeric",
+            "label": "Chol",
+            "min": 126.0,
+            "max": 360.0,
+            "median": 239.0
+        },
+        "fbs": {
+            "type": "categorical",
+            "label": "Fasting Blood Sugar",
+            "options": {
+                "0": "No",
+                "1": "Yes"
+            }
+        },
+        "restecg": {
+            "type": "categorical",
+            "label": "Resting ECG",
+            "options": {
+                "0": "Normal",
+                "1": "ST-T Wave Abnormality",
+                "2": "Left Ventricular Hypertrophy"
+            }
+        },
+        "thalach": {
+            "type": "numeric",
+            "label": "Thalach",
+            "min": 88.0,
+            "max": 202.0,
+            "median": 153.0
+        },
+        "exang": {
+            "type": "categorical",
+            "label": "Exercise-Induced Angina",
+            "options": {
+                "0": "No",
+                "1": "Yes"
+            }
+        },
+        "oldpeak": {
+            "type": "numeric",
+            "label": "Oldpeak",
+            "min": 0.0,
+            "max": 4.0,
+            "median": 0.6
+        },
+        "slope": {
+            "type": "categorical",
+            "label": "ST Slope",
+            "options": {
+                "0": "Upsloping",
+                "1": "Flat",
+                "2": "Downsloping"
+            }
+        },
+        "ca": {
+            "type": "categorical",
+            "label": "Major Vessels",
+            "options": {
+                "0": "0",
+                "1": "1",
+                "2": "2",
+                "3": "3"
+            }
+        },
+        "thal": {
+            "type": "categorical",
+            "label": "Thalassemia",
+            "options": {
+                "0": "Normal",
+                "1": "Fixed Defect",
+                "2": "Reversible Defect"
+            }
+        }
+    },
+    "best_model": "Random Forest",
+    "models": {
+        "Logistic Regression": {
+            "accuracy": 0.807,
+            "precision": 0.8182,
+            "recall": 0.8438,
+            "f1": 0.8308,
+            "roc_auc": 0.87
+        },
+        "Random Forest": {
+            "accuracy": 0.8246,
+            "precision": 0.8438,
+            "recall": 0.8438,
+            "f1": 0.8438,
+            "roc_auc": 0.8731
+        },
+        "Gradient Boosting": {
+            "accuracy": 0.807,
+            "precision": 0.8182,
+            "recall": 0.8438,
+            "f1": 0.8308,
+            "roc_auc": 0.8488
+        }
+    },
+    "dataset": {
+        "rows": 283,
+        "columns": 14
+    }
+}
