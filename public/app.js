@@ -14,6 +14,7 @@ let modelPerformanceChart = null;
 let analyticsData = null;
 let scatterData = null;
 let metadataData = null;
+let healthData = null;
 let correlationData = null;
 
 
@@ -860,27 +861,32 @@ function renderMetadata() {
     const datasetRowsElement = getElement("datasetRows");
     const bestModelElement = getElement("bestModel");
 
-    /* use the first value that is a real, positive number (a 0 from the backend is ignored) */
-    const datasetRows = [
-        metadataData?.dataset_size,
-        metadataData?.rows,
-        metadataData?.dataset_rows,
-        correlationData?.rows
-    ].map(Number).find(n => Number.isFinite(n) && n > 0) ?? null;
+    /*
+     * Dataset count comes directly from /api/health.
+     * This is more reliable than depending on metadata.json.
+     */
+    const datasetRows =
+        Number(healthData?.dataset_rows) ||
+        Number(metadataData?.dataset_size) ||
+        Number(metadataData?.rows) ||
+        Number(metadataData?.dataset_rows) ||
+        null;
 
     if (modelCountElement) {
-        modelCountElement.textContent = Object.keys(results).length || "—";
+        modelCountElement.textContent =
+            Object.keys(results).length || "—";
     }
 
     if (datasetRowsElement) {
         datasetRowsElement.textContent =
-            Number.isFinite(Number(datasetRows))
-                ? Number(datasetRows).toLocaleString()
+            Number.isFinite(datasetRows)
+                ? datasetRows.toLocaleString()
                 : "—";
     }
 
     if (bestModelElement) {
-        bestModelElement.textContent = bestModel || "—";
+        bestModelElement.textContent =
+            bestModel || "—";
     }
 
     renderModelCards(results, bestModel);
@@ -910,7 +916,14 @@ function renderAnalytics() {
 /* =========================================================
    LOADERS
 ========================================================= */
+async function loadHealth() {
 
+    healthData = await fetchJSON("/api/health");
+
+    if (healthData) {
+        renderMetadata();
+    }
+}
 async function loadMetadata() {
 
     metadataData = await fetchJSON("/api/metadata");
@@ -1209,7 +1222,7 @@ async function initApp() {
     if (!chartReady()) {
         reportIssue("Chart.js did not load — check your internet connection or the CDN script tag");
     }
-
+    await loadHealth();
     await loadMetadata();
     await loadAnalytics();
     await loadScatterData();
