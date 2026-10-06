@@ -97,7 +97,7 @@ The CSV must contain these columns:
 ### 4. Run the app
 
 ```bash
-uvicorn main:app --reload
+uvicorn api.index:app --reload
 ```
 
 Open **http://127.0.0.1:8000** in your browser.
